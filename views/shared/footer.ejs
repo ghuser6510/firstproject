@@ -1,0 +1,14 @@
+<footer style="position:absolute;bottom:0px;" >
+	hello footer 
+	<% if( typeof logged_user !== 'undefined') { %>
+		<div class="suggestion_box" marco="<%= logged_user %>" username="<%= logged_username %>">
+			<textarea class="suggestion_text" ></textarea>
+			<div class="submit_suggestion">submit</div>
+		</div>
+	<% } else { %>
+	<% } %>
+	
+</footer>
+
+
+	

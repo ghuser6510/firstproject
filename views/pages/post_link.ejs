@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../js/jquery10.js"></script>
+<script src="../js/migrate.js"></script>
+<script src="../js/modernizr.custom.57033.js"></script>
+<script src="../js/post_link.js"></script>
+
+
+<link rel="stylesheet" href="../css/selectize.default.css" data-theme="default">
+<script src="../js/selectize.js"></script>
+
+
+<style>
+
+.post_link{
+	cursor:pointer;
+	position:relative;
+	float:left;
+	background-color:orange;
+}
+.link_title,.link_url{
+	position:relative;
+	float:left;
+	width:100%;
+}
+.error_class{
+	border:1px solid red;
+}
+.url_err{
+	color:red;
+}
+
+</style>
+
+
+
+	
+	
+</head>
+<body>
+
+
+<div class="link_form" marco="<%= marcoId %>" >
+	<label>Link title</label>
+	<input class="link_title" />
+	
+	<div class="demo">
+        <div class="control-group">
+            <label for="input-tags">Select language</label>
+			<input type="text" id="input-learning-language-tags" data="" class="input-tags input-language-tags" value="">
+        </div>
+	</div>  
+	
+	<input class="link_url"/>
+	<span class="url_err"></span>
+	<div class="post_link">post link</send>
+</div>
+
+
+
+</body>
+</html>

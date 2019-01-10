@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+</head>
+<body>
+
+<h2>Loop</h2>
+
+<ul>
+    <% drinks.forEach(function(drink) { %>
+        <li><%= drink.name %> - <%= drink.drunkness %></li>
+    <% }); %>
+</ul>
+
+<p><%= tagline %></p>
+
+</body>
+</html>

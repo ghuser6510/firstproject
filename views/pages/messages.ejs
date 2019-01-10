@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="/socket.io/socket.io.js"></script>
+<script src="../js/jquery10.js"></script>
+<script src="../js/migrate.js"></script>
+<script src="../js/modernizr.custom.57033.js"></script>
+<script src="../js/sendmessage.js"></script>
+
+
+
+<style>
+.chat_box{
+	position:relative;
+	float:left;
+	width:500px;
+}
+.new_msg_text{
+	position:relative;
+	float:left;
+	width:100%;
+}
+.message_title,.new_msg_title{
+	position:relative;
+	float:left;
+	width:100%;
+}
+.send_message_submit{
+	position:relative;
+	float:right;
+	background-color:orange;
+	cursor:pointer;
+}
+.messages_listings{
+	position:relative;
+	float:left;
+	margin-bottom:50px;
+	width:500px;
+}
+.message,.polo_title,.messages_display{
+	position:relative;
+	float:left;
+	width:100%;
+}
+.message_line_right{
+	position:relative;
+	float:right;
+	text-align:right;
+	width:100%;
+}
+.message_line_left{
+	position:relative;
+	float:left;
+	text-align:left;
+	width:100%;
+}
+.conversation_display{
+	padding:20px;
+	border:1px solid #000;
+	float:left;
+	position:relative;
+	width:100%;
+	height:300px;
+	overflow: auto;
+    overflow-x: hidden;
+}
+.unread_msg{
+	background-color:orange;
+}
+.selected_msg{
+	background-color:grey;
+}
+.emoji-picker-icon{
+	top:360px !important;
+	right: -20px !important;
+}
+.emoji-menu{
+	top:380px !important;
+}
+.emoji_disabled{
+	border:none !important;
+	padding-left:0px !important;
+	padding-right:0px !important;
+}	
+
+
+.emoji-picker-icon{
+	display:none !important;
+}
+.chat_textarea .emoji-picker-icon{
+	display:block !important;
+}
+
+</style>
+
+
+
+<!-- Begin emoji-picker Stylesheets -->
+    <link href="../css/emoji.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<!-- End emoji-picker Stylesheets -->
+	
+	
+</head>
+<body>
+
+<h1 class="message_h1"></h1>
+
+<!-- populated from the front js -->
+<div class="messages_listings">
+</div>
+
+
+<div class="chat_box" marco="<%= marcoId %>" marcoName="<%= marcoName %>" polo="<%= poloId %>">
+	<div class="conversation_display"></div>
+	<div class="chat_textarea"><textarea rows="5" class="new_msg_text form-control textarea-control" data-emojiable="true"></textarea></div>
+	<div class="send_message_submit">send</send>
+</div>
+
+<!-- Begin emoji-picker JavaScript -->
+    <script src="../js/emojis/config.js"></script>
+    <script src="../js/emojis/util.js"></script>
+    <script src="../js/emojis/jquery.emojiarea.js"></script>
+    <script src="../js/emojis/emoji-picker.js"></script>
+<!-- End emoji-picker JavaScript -->
+
+<script>
+      $(function() {
+			SetEmojis = function(){
+					// Initializes and creates emoji set from sprite sheet
+					window.emojiPicker = new EmojiPicker({
+					  emojiable_selector: '[data-emojiable=true]',
+					  assetsPath: '../img/',
+					  popupButtonClasses: 'fa fa-smile-o'
+					});
+					// Finds all elements with `emojiable_selector` and converts them to rich emoji input fields
+					// You may want to delay this step if you have dynamically created input fields that appear later in the loading process
+					// It can be called as many times as necessary; previously converted input fields will not be converted again
+					window.emojiPicker.discover();
+					$(".emoji_disabled").attr('contenteditable', false);  
+				}//SetEmojis;
+				SetEmojis();
+      });
+</script>
+
+</body>
+</html>

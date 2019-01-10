@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<script src="../js/jquery10.js"></script>
+<script src="../js/migrate.js"></script>
+<script src="../js/modernizr.custom.57033.js"></script>
+<script src="../js/questions.js"></script>
+
+<!-- Begin emoji-picker Stylesheets -->
+    <link href="../css/emoji.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<!-- End emoji-picker Stylesheets -->
+
+
+<link rel="stylesheet" href="../css/selectize.default.css" data-theme="default">
+<script src="../js/selectize.js"></script>
+
+
+<style>
+.question_item{
+	position:relative;
+	float:left;
+	margin-bottom:20px;
+	padding:20px;
+	border:1px solid #000;
+	clear:both;
+}
+.url_title{
+	background-color:orange;
+}
+
+.filter_container{
+	position:relative;
+	float:left;
+	width:100%;
+}
+
+.search_button,.edit_question,.save_question{
+	background-color:orange;
+	position:relative;
+	float:left;
+	cursor:pointer;
+}
+.save_question{
+	display:none;
+}
+.error_class{
+	border:1px solid red;
+}
+.item_locked .emoji-picker-icon{
+	display:none;
+}
+.emoji_disabled{
+	border:none !important;
+	padding-left:0px !important;
+	padding-right:0px !important;
+}
+.edit_save_holder{
+	position:relative;
+	float:left;
+	width:100%;
+}
+.delete_question{
+	background-color:red;
+	position:relative;
+	float:left;
+	cursor:pointer;
+}
+	
+.sort_menu{
+	position:relative;
+	float:left;
+	width:100%;
+	margin-top:30px;
+	margin-bottom:30px;
+}
+
+.sort_upvotes,.sort_downvotes,.sort_recent{
+	position:relative;
+	float:left;
+	background-color:blue;
+	cursor:pointer;
+	margin-right:20px;
+	color:white;
+}
+</style>
+
+</head>
+<body>
+
+<h1>total results: <%= total_results %></h1>
+<h2>total pages: <%= total_pages %></h2>
+
+<a href="/my_questions">View all</a>
+
+<div class="filter_container">
+
+	<label>Search</label>
+	<input class="search_input" value="<%= search_keyword %>" />
+	
+	<div class="demo">
+        <div class="control-group">
+            <label for="input-tags">Select language</label>
+			<input type="text" id="input-learning-language-tags" data="" class="input-tags input-language-tags" value="<%= search_language %>">
+        </div>
+	</div>  
+	
+	<div class="search_button">search</send>
+
+
+</div>
+
+<div class="sort_menu">
+	<div class="sort_upvotes">Sort by upvotes</div>
+	<div class="sort_downvotes">Sort by downvotes</div>
+	<div class="sort_recent">Sort by most recent</div>
+</div>
+
+<div class="questions_listing">
+
+    <% questions_found.forEach(function(question) { %>
+      <ul class="question_item" question_id="<%= question._id %>" upvotes="<%= question.upvotes.length %>" downvotes="<%= question.downvotes.length %>" >
+		
+		<li>
+			<div class="owners_box">
+				<div class="owner_id"><%= question.owner %></div>
+				<div class="owner_name"></div>
+				<div class="owner_pic"></div>
+			</div>
+		</li>
+		
+		<li>title: <%= question.title %></li>
+		<li><a class="url_title" href="/question/<%= question.url_title %>" >url_title: <%= question.url_title %></a></li>
+		<li>language: <%= question.language %></li>
+		<li class="description_holder item_locked"><textarea class="question_description form-control textarea-control emoji_disabled" data-emojiable="true" > description: <%= question.description %></textarea></li>
+		<li>upvotes: <%= question.upvotes.length %></li>
+		<li>downvotes: <%= question.downvotes.length %></li>
+		
+		<div class="edit_save_holder">
+			<div class="edit_question">edit question</div>
+			<div class="save_question">save question</div>
+			<div class="delete_question">delete question</div>
+		</div>
+	</ul>
+    <% }); %>
+
+</div>
+
+
+
+<!-- Begin emoji-picker JavaScript -->
+    <script src="../js/emojis/config.js"></script>
+    <script src="../js/emojis/util.js"></script>
+    <script src="../js/emojis/jquery.emojiarea.js"></script>
+    <script src="../js/emojis/emoji-picker.js"></script>
+<!-- End emoji-picker JavaScript -->
+
+<script>
+      $(function() {
+			SetEmojis = function(){
+					// Initializes and creates emoji set from sprite sheet
+					window.emojiPicker = new EmojiPicker({
+					  emojiable_selector: '[data-emojiable=true]',
+					  assetsPath: '../img/',
+					  popupButtonClasses: 'fa fa-smile-o'
+					});
+					// Finds all elements with `emojiable_selector` and converts them to rich emoji input fields
+					// You may want to delay this step if you have dynamically created input fields that appear later in the loading process
+					// It can be called as many times as necessary; previously converted input fields will not be converted again
+					window.emojiPicker.discover();
+					$(".emoji_disabled").attr('contenteditable', false);  
+				}//SetEmojis;
+				SetEmojis();
+	  });
+</script>
+
+</body>
+</html>

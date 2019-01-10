@@ -1,0 +1,30 @@
+{
+  "name": "FirstProject",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^1.0.3",
+    "body-parser": "^1.18.2",
+    "cities.json": "^1.1.5",
+    "cookie-parser": "^1.4.3",
+    "ejs": "^2.6.1",
+    "express": "^4.16.2",
+    "express-session": "^1.15.6",
+    "interest-list": "0.0.7",
+    "language-list": "0.0.3",
+    "languages-js": "^2.2.8",
+    "mongoose": "^5.4.0",
+    "multer": "^1.4.1",
+    "node-array": "0.0.7",
+    "path": "^0.12.7",
+    "request-country": "^0.1.4",
+    "socket.io": "^2.0.4"
+  }
+}

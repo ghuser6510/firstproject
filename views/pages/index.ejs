@@ -1,0 +1,95 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+
+<script src="http://code.jquery.com/jquery-latest.min.js" type="text/javascript"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="../js/header.js"></script>
+
+<style>
+.suggestion_box{
+	position:relative;
+	float:left;
+	width:300px;
+}
+.suggestion_text{
+	position:relative;
+	float:left;
+	width:300px;
+}
+.submit_suggestion{
+	position:relative;
+	float:left;
+	cursor:pointer;
+	background-color:orange;
+}
+	.error_class{
+		border:1px solid red;
+	}
+	
+</style>
+
+</head>
+
+<body>
+
+<script>
+	var rootURL = 'http://localhost:3000';
+	var socket = io(); // initiliaze socket
+	
+	// event listener for custom io events
+	socket.on('myCustomEvent', function(arg){
+		console.log("custom socket io event");
+		console.log(arg);
+	});
+	
+	//front-end node js read from backend
+	function getMessages(){
+		$.get( rootURL + '/messages', function(data){
+			//console.log(data);
+			data.forEach(function(element){
+				//console.log(element.name);
+				//console.log(element.says);
+				console.log(element.email);
+				console.log(element.username);
+				console.log(element.password);
+				console.log(element.confirm_password);
+				console.log(element.phone);
+			},this);
+		});// end get
+	}// end function getMessages
+	
+	
+	//front-end node js send data to the backend
+	var TestJson = {name: 'Tim1', says: 'Hi1'};  // the json structure must match the backend mongoose model structure
+	var TestUser = {email: 'tim2@tim.com', username: 'timUsername2', password: '123', confirm_password:'123', phone: '8888'};// confirm pass front-end - compare and only hash the pass in the backend
+	
+	function SignupNewUser(userInfo){
+		$.post(rootURL + '/new_user_signup', userInfo ); // can only send 1 message at the time and not an array
+	}// end function postMessages
+	
+	function deleteUser(){
+		$.get( rootURL + '/delete', function(){});// end get
+	}
+	
+	function UpdateUser(newInfo){
+		$.post(rootURL + '/updateuser', newInfo );
+	}
+	
+	
+	$( document ).ready(function() {
+		//getMessages();
+		//SignupNewUser(TestUser); 
+		//deleteUser();
+		//UpdateUser(TestUser);
+	});
+	
+</script>
+Welcome home
+
+<% include ../shared/footer %>
+
+</body>
+</html>

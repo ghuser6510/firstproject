@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+
+<script src='../js/jquery10.js'></script>
+<script src="../js/migrate.js"></script>
+<script src="../js/modernizr.custom.57033.js"></script>
+<link rel="stylesheet" href="../css/selectize.default.css" data-theme="default">
+<script src="../js/selectize.js"></script>
+<script src="../js/find_partner.js"></script>
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../css/niceCountryInput.css">
+<script src="../js/niceCountryInput.js"></script>
+
+
+<style>
+
+.profiles_listing{
+	position:relative;
+	float:left;
+	width:500px;
+}
+.profile_item{
+	position:relative;
+	float:left;
+	width:100%;
+	margin-bottom:30px;
+}
+
+.profile_item div{
+	position:relative;
+	float:left;
+	width:100%;
+}
+
+.profile_item .profile_item_pic{
+	position:relative;
+	float:left;
+	width:200px;
+	height:200px;
+	background-size:cover;
+	background-position:center;
+}
+.profile_item .send_user_message{
+	position:relative;
+	float:left;
+	background-color:red;
+	cursor:pointer;
+	width:auto;
+}
+.filters_container{
+	position:relative;
+	float:left;
+	width:100%;
+	margin-bottom:50px;
+	padding-bottom:50px;
+	border-bottom:1px solid #000;
+}
+.demo{
+	margin-top:50px;
+	position:relative;
+	width:400px;
+	clear:both;	
+}
+.submit_filter{
+	position:relative;
+	float:left;
+	background-color:blue;
+	cursor:pointer;
+	width:auto;
+}
+
+</style>
+
+</head>
+<body>
+
+<h1>total results: <%= total_results %></h1>
+<h2>total pages: <%= total_pages %></h2>
+<a href="/find_partner">View all</a>
+
+<div class="filters_container">
+
+	<!--custom drop down for countries-->
+    <div class="niceCountryInputSelector" style="width: 300px;" data-selectedcountry="<%= requested_country %>" data-showspecial="false" data-showflags="true" data-i18nall="All selected" data-i18nnofilter="No selection" data-i18nfilter="Filter" data-onchangecallback="onChangeCallback" />
+    </div>
+	
+	 <!--custom multiple select for cities-->
+	<div class="demo">
+        <div class="control-group">
+            <label for="input-tags">Select your city</label>
+            <input type="text" id="input-city-tags" data="" class="input-tags demo-default input-city-tags" value="<%= requested_cities %>">
+        </div>
+	</div> 	
+	
+	<!--custom multiple select for languages-->
+	<div class="demo">
+        <div class="control-group">
+            <label for="input-tags">Language you're learning</label>
+			<input type="text" id="input-learning-language-tags" data="" class="input-tags input-sought-languages input-language-tags" value="<%= requested_languages %>">
+        </div>
+	</div>  
+    
+    <!--custom multiple select for interests-->
+	<div class="demo">
+        <div class="control-group">
+            <label for="input-tags">Select interests</label>
+            <input type="text" id="input-interests-tags" data="" class="input-tags demo-default input-interests-tags" value="<%= requested_interests %>">
+        </div>
+	</div> 
+	
+	<div class="submit_filter">Search</div> 
+
+</div><!--filters_container-->
+
+
+<div class="profiles_listing">
+
+<% users_found.forEach(function(item) { %>
+	<div class="profile_item">
+		<div class="profile_item_pic" style='background-image:URL(../<%= item.profile_pic %>)'></div>
+		<div class="profile_item_name"><%= item.firstname %></div>
+		<div class="profile_item_id"><%= item.id %></div>
+		<div class="profile_item_country"><%= item.country_name %></div>
+		
+		<div class="profile_item_cities">
+			<% item.cities.forEach(function(city) { %>
+				<span><%= city.city %></span>
+			<% }); %>
+		</div>
+		
+		<div class="profile_item_native_languages">
+			<% item.native_languages.forEach(function(language) { %>
+				<span><%= language.native_language %></span>
+			<% }); %>
+		</div>
+		
+		<div class="profile_item_sought_languages">
+			<% item.sought_languages.forEach(function(language) { %>
+				<span><%= language.sought_language %></span>
+			<% }); %>
+		</div>
+		
+		<div class="profile_item_interests">
+			<% item.interests.forEach(function(interest) { %>
+				<span><%= interest.interest %></span>
+			<% }); %>
+		</div>
+		
+		<div class="profile_item_last_login"><%= item.lastactive %></div>
+		<a href="/profile/<%= item.username %>" class="view_this_profile">View this profile</a>
+		<a href="/messages/<%= item.id %>" class="send_user_message">Send this user a msg</a>
+	</div>
+<% }); %>
+
+
+
+
+
+</div><!--profiles_listing-->
+
+
+<script>
+	//must be here not working inside the edit profile js file
+	function onChangeCallback(ctr){
+		//alert("The country was changed: " + ctr);
+		$('#input-city-tags')[0].selectize.destroy();
+		ResetCitiesDroplist(ctr);
+		//$("#selectionSpan").text(ctr);
+	}
+</script>
+
+</body>
+</html>

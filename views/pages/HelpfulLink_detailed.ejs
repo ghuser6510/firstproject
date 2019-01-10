@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../js/jquery10.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="../js/migrate.js"></script>
+<script src="../js/modernizr.custom.57033.js"></script>
+<script src="../js/link_details.js"></script>
+
+<!-- Begin emoji-picker Stylesheets -->
+    <link href="../css/emoji.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<!-- End emoji-picker Stylesheets -->
+
+
+
+<style>
+.emoji-picker-icon{
+	display:none;
+}	
+.comment_box .emoji-picker-icon{
+	top: 120px !important;
+    right: 20px !important;
+	display:block !important;
+}
+.emoji-menu{
+	top: 145px !important;
+    right: 20px;
+}
+.post_comment{
+	cursor:pointer;
+	position:relative;
+	float:left;
+	background-color:orange;
+}
+.link_title{
+	position:relative;
+	float:left;
+	width:100%;
+}
+.error_class{
+	border:1px solid red;
+}
+.owner_box,.my_box{
+	margin-top:10px;
+	margin-bottom:10px;
+	position:relative;
+	float:left;
+	clear:both;
+	width:100%;
+}
+.comment_link_text{
+	width:90%;
+}
+.comment_item{
+	position:relative;
+	float:left;
+	width:100%;
+	margin-top:10px;
+	margin-bottom:10px;
+	border:1px solid blue;
+}
+.like_this,.dislike_this{
+	cursor:pointer;
+	background-color:orange;
+	position:retlative;
+	float:left;
+	margin-right:10px;
+}
+.unlike,.undislike{
+	cursor:pointer;
+	background-color:orange;
+	position:relative;
+	float:left;
+	clear:both;
+	display:none;
+}
+.upvote_this,.downvote_this,.unupvote_this,.undownvote_this{
+	cursor:pointer;
+	background-color:orange;
+	position:relative;
+	float:left;
+	margin-left:20px;
+}
+.link_url_destination{
+	position:relative;
+	float:left;
+	clear:both;
+	margin-top:20px;
+}
+.upvotes,.downvotes{
+	position:relative;
+	float:left;
+}
+.downvotes{
+	clear:left;
+}
+.unupvote_this,.undownvote_this{
+	display:none;
+}
+.emoji_disabled{
+	border:none;
+	padding-left:0px !important;
+}
+.remove_from_favourites,.add_to_favourites{
+	position:relative;
+	float:left;
+	clear:both;
+	display:none;
+	background-color:grey;
+	cursor:pointer;
+}
+
+
+
+</style>
+
+
+
+	
+	
+</head>
+<body>
+
+
+<div class="link_box" link_id="<%= link_id %>" >
+	
+	<h1 class="link_title"><%= title %></h1>
+	<div class="link_language">language: <%= language %></div>
+	
+	<div class="upvotes">upvotes: <span><%= upvotes %></span></div>
+	<% if( typeof logged_user !== 'undefined') { %>
+		<div class="upvote_this">upvote link</div>
+		<div class="unupvote_this">unupvote link</div>
+	<% } else { %>
+	<% } %>
+	
+	<div class="downvotes">downvotes: <span><%= downvotes %></span></div>
+	<% if( typeof logged_user !== 'undefined') { %>
+		<div class="downvote_this">downvote link</div>
+		<div class="undownvote_this">undownvote link</div>
+	<% } else { %>
+	<% } %>
+	
+	
+	
+	<a href="<%= url_destination %>" target="_blank" rel="nofollow" class="link_url_destination" >url_destination: <%= url_destination %></a>
+	
+	<div class="owner_box">
+		<div class="owner_id"><%= owner %></div>
+		<div class="owner_name"></div>
+		<div class="owner_pic"></div>
+	</div>
+	
+	<% if( typeof logged_user !== 'undefined') { %>
+		
+		<div class="comment_box">
+			<textarea marco="<%= typeof logged_user != 'undefined' ? logged_user : ''  %>" rows="5" class="comment_link_text form-control textarea-control" data-emojiable="true"></textarea>
+
+			<div class="my_box">
+				<div class="owner_name"></div>
+				<div class="owner_pic"></div>
+			</div>
+
+			<div class="post_comment">post comment</send>
+		</div> <!--comment_box-->
+		
+		<div class="add_to_favourites">add to favourites</div>
+		<div class="remove_from_favourites">remove from favourites</div>
+	
+	<% } else { %>
+	<% } %>
+	
+</div><!--link_box-->
+
+<div class="comments_holder">
+	<% comments.forEach(function(comment) { %>
+
+		<div class="comment_item">
+			<div class="owner_box">
+				<div class="comment_owner_id"><%= comment.from %></div>
+				<div class="owner_name"></div>
+				<div class="owner_pic"></div>
+			</div>
+
+			<textarea class="comment_url_destination emoji_disabled" data-emojiable="true" ><%= comment.comment_url_destination %></textarea>
+			
+			<div class="comment_likes">
+				<div class="like_this">like</div>
+				<div class="likes_count"><span><%= comment.likes.length %></span> likes</div>
+				<div class="dislike_this">dislike</div>
+				<div class="dislikes_count"><span><%= comment.dislikes.length %></span> dislikes</div>
+			</div>
+			
+			<div class="unlike">unlike</div>
+			<div class="undislike">un-dislike</div>
+			
+		</div><!--comment_item-->
+
+	<% }); %>
+</div><!--comments_holder-->
+
+<!-- Begin emoji-picker JavaScript -->
+    <script src="../js/emojis/config.js"></script>
+    <script src="../js/emojis/util.js"></script>
+    <script src="../js/emojis/jquery.emojiarea.js"></script>
+    <script src="../js/emojis/emoji-picker.js"></script>
+<!-- End emoji-picker JavaScript -->
+
+<script>
+      $(function() {
+			// Initializes and creates emoji set from sprite sheet
+			window.emojiPicker = new EmojiPicker({
+			  emojiable_selector: '[data-emojiable=true]',
+			  assetsPath: '../img/',
+			  popupButtonClasses: 'fa fa-smile-o'
+			});
+			// Finds all elements with `emojiable_selector` and converts them to rich emoji input fields
+			// You may want to delay this step if you have dynamically created input fields that appear later in the loading process
+			// It can be called as many times as necessary; previously converted input fields will not be converted again
+			window.emojiPicker.discover();
+			$(".emoji_disabled").attr('contenteditable', false);  
+      });
+</script>
+
+</body>
+</html>

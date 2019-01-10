@@ -1,0 +1,181 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+<script src="../js/jquery10.js"></script>
+<script src="../js/migrate.js"></script>
+<script src="../js/modernizr.custom.57033.js"></script>
+
+<script src="../js/niceCountryInput.js"></script>
+<script src="../js/selectize.js"></script>
+
+<link rel="stylesheet" type="text/css" href="../css/niceCountryInput.css">
+<link rel="stylesheet" type="text/css" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.0/css/bootstrap.min.css">
+
+<link rel="stylesheet" href="../css/selectize.default.css" data-theme="default">
+
+<script src="../js/edit_profile.js"></script>
+
+
+<title>Untitled Document</title>
+
+
+<style>
+.FormInputError{
+	border:1px solid red;	
+}
+.edit_profile_submit{
+	background-color:orange;
+	cursor:pointer;
+	width:200px;
+	margin-top:40px;
+}
+.demo{
+	margin-top:50px;
+	position:relative;
+	width:400px;
+	clear:both;	
+}
+
+</style>
+
+<% include ../shared/head %>
+
+
+</head>
+
+<body>
+
+<script>
+	
+	/*	
+	
+	
+	//var user_native_languages =  <%= logged_native_languages %> ;
+	//var user_sought_languages =  <%= logged_sought_languages %> ;
+	//var user_interests =  <%= logged_interests %> ;
+	*/
+</script>
+
+<header>
+    <% include ../shared/header %>
+</header>
+
+<div class="edit_profile_form">
+	<h2 class="logged_user"> <%= logged_user %> </h2>
+    
+    <label>New Password</label>
+    <input type="password" class="edit_profile_password"/>
+    <label>Confirm Password</label>
+    <input type="password" class="edit_profile_confirm_password"/>
+    <span class="edit_profile_confirmpassword_span"></span>
+	
+    <!--custom drop down for countries-->
+    <div class="niceCountryInputSelector" style="width: 300px;" data-selectedcountry="<%= logged_country != undefined ? logged_country : 'US' %>" data-showspecial="false" data-showflags="true" data-i18nall="All selected"
+            data-i18nnofilter="No selection" data-i18nfilter="Filter" data-onchangecallback="onChangeCallback" />
+    </div>
+    
+    <!--custom multiple select for cities-->
+	<div class="demo">
+        <div class="control-group">
+            <label for="input-tags">Select your city</label>
+			
+			<div class="hidden_saved_cities" style="display:none">
+				<% logged_cities.forEach(function(drink) { %>
+					<span><%= drink.city %></span>
+				<% }); %>
+			</div><!--hidden_saved_cities-->
+            <input type="text" id="input-city-tags" data="" class="input-tags demo-default input-city-tags" value="">
+        </div>
+	</div> 
+    
+    
+    <!--custom multiple select for languages-->
+	<div class="demo">
+        <div class="control-group">
+            <label for="input-tags">Select Native language</label>
+			
+			<div class="hidden_saved_native_languages" style="display:none">
+				<% logged_native_languages.forEach(function(drink) { %>
+					<span><%= drink.native_language %></span>
+				<% }); %>
+			</div><!--hidden_saved_native_languages-->
+			<input type="text" id="input-native-language-tags" data="" class="input-tags input-native-languages input-language-tags" value="">
+        </div>
+	</div> 
+    
+    <!--custom multiple select for languages-->
+	<div class="demo">
+        <div class="control-group">
+            <label for="input-tags">Language you're learning</label>
+			
+			<div class="hidden_saved_sought_languages" style="display:none">
+				<% logged_sought_languages.forEach(function(drink) { %>
+					<span><%= drink.sought_language %></span>
+				<% }); %>
+			</div><!--hidden_saved_sought_languages-->
+			<input type="text" id="input-learning-language-tags" data="" class="input-tags input-sought-languages input-language-tags" value="">
+        </div>
+	</div>  
+    
+    <!--custom multiple select for interests-->
+	<div class="demo">
+        <div class="control-group">
+            <label for="input-tags">Select interests</label>
+			
+			<div class="hidden_saved_interests" style="display:none">
+				<% logged_interests.forEach(function(drink) { %>
+					<span><%= drink.interest %></span>
+				<% }); %>
+			</div><!--hidden_saved_interests-->
+            <input type="text" id="input-interests-tags" data="" class="input-tags demo-default input-interests-tags" value="">
+        </div>
+	</div>  
+    
+    <label>About description</label>
+    <textarea class="about_text_area"><%= logged_about_me %></textarea>
+	
+	
+	<div class="container">
+		<h1>File Upload</h1>
+		<%= typeof msg != 'undefined' ? msg : '' %>
+		
+		<form  id="data" method="post" enctype="multipart/form-data">
+		  <div class="file-field input-field">
+			<div class="btn grey">
+			  <span>File</span>
+			  <input class="myImage_info" name="myImage" type="file" accept="image/png, image/jpeg, image/jpg, image/gif">
+			</div>
+			<div class="file-path-wrapper">
+			  <input style="display:none" class="file-path validate" type="text">
+			</div>
+		  </div>
+		  <div style="cursor:pointer" class="delete_image">delete image</div>
+		  <button>Submit</button>
+		</form>
+		<br>
+		<img alt="<%= logged_profile_pic %>" src="../<%= logged_profile_pic %>" class="profile_pic">
+   </div>
+	
+   <div class="edit_profile_submit">Submit</div>
+</div>
+
+
+<script>
+	//must be here not working inside the edit profile js file
+	function onChangeCallback(ctr){
+		//alert("The country was changed: " + ctr);
+		$('#input-city-tags')[0].selectize.destroy();
+		ResetCitiesDroplist(ctr);
+		//$("#selectionSpan").text(ctr);
+	}
+	
+	
+	
+	
+	
+</script>
+
+</body>
+</html>

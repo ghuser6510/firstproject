@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<script src="../js/jquery10.js"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="../js/migrate.js"></script>
+<script src="../js/modernizr.custom.57033.js"></script>
+<script src="../js/question_details.js"></script>
+
+<!-- Begin emoji-picker Stylesheets -->
+    <link href="../css/emoji.css" rel="stylesheet">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+<!-- End emoji-picker Stylesheets -->
+
+
+
+<style>
+.emoji-picker-icon{
+	display:none;
+}	
+.answer_box .emoji-picker-icon{
+	top: 120px !important;
+    right: 20px !important;
+	display:block !important;
+}
+.emoji-menu{
+	top: 145px !important;
+    right: 20px;
+}
+.post_answer{
+	cursor:pointer;
+	position:relative;
+	float:left;
+	background-color:orange;
+}
+.question_title{
+	position:relative;
+	float:left;
+	width:100%;
+}
+.error_class{
+	border:1px solid red;
+}
+.owner_box,.my_box{
+	margin-top:10px;
+	margin-bottom:10px;
+	position:relative;
+	float:left;
+	clear:both;
+	width:100%;
+}
+.answer_question_text{
+	width:90%;
+}
+.answer_item{
+	position:relative;
+	float:left;
+	width:100%;
+	margin-top:10px;
+	margin-bottom:10px;
+	border:1px solid blue;
+}
+.like_this,.dislike_this{
+	cursor:pointer;
+	background-color:orange;
+	position:retlative;
+	float:left;
+	margin-right:10px;
+}
+.unlike,.undislike{
+	cursor:pointer;
+	background-color:orange;
+	position:relative;
+	float:left;
+	clear:both;
+	display:none;
+}
+.upvote_this,.downvote_this,.unupvote_this,.undownvote_this{
+	cursor:pointer;
+	background-color:orange;
+	position:relative;
+	float:left;
+	margin-left:20px;
+}
+.question_description{
+	position:relative;
+	float:left;
+	clear:both;
+	margin-top:20px;
+}
+.upvotes,.downvotes{
+	position:relative;
+	float:left;
+}
+.downvotes{
+	clear:left;
+}
+.unupvote_this,.undownvote_this{
+	display:none;
+}
+.emoji_disabled{
+	border:none;
+	padding-left:0px !important;
+}
+
+
+</style>
+
+
+
+	
+	
+</head>
+<body>
+
+
+<div class="question_box" question_id="<%= question_id %>" >
+	
+	<h1 class="question_title"><%= title %></h1>
+	<div class="question_language">language: <%= language %></div>
+	
+	<div class="upvotes">upvotes: <span><%= upvotes %></span></div>
+	<% if( typeof logged_user !== 'undefined') { %>
+		<div class="upvote_this">upvote question</div>
+		<div class="unupvote_this">unupvote question</div>
+	<% } else { %>
+	<% } %>
+	
+	<div class="downvotes">downvotes: <span><%= downvotes %></span></div>
+	<% if( typeof logged_user !== 'undefined') { %>
+		<div class="downvote_this">downvote question</div>
+		<div class="undownvote_this">undownvote question</div>
+	<% } else { %>
+	<% } %>
+	
+	
+	
+	<textarea class="question_description emoji_disabled" data-emojiable="true" >description: <%= description %></textarea>
+	
+	<div class="owner_box">
+		<div class="owner_id"><%= owner %></div>
+		<div class="owner_name"></div>
+		<div class="owner_pic"></div>
+	</div>
+	
+	<% if( typeof logged_user !== 'undefined') { %>
+		
+		<div class="answer_box">
+			<textarea marco="<%= typeof logged_user != 'undefined' ? logged_user : ''  %>" rows="5" class="answer_question_text form-control textarea-control" data-emojiable="true"></textarea>
+
+			<div class="my_box">
+				<div class="owner_name"></div>
+				<div class="owner_pic"></div>
+			</div>
+
+			<div class="post_answer">post answer</send>
+		</div> <!--answer_box-->
+	
+	<% } else { %>
+	<% } %>
+	
+</div><!--question_box-->
+
+<div class="answers_holder">
+	<% Answers.forEach(function(answer) { %>
+
+		<div class="answer_item">
+			<div class="owner_box">
+				<div class="answer_owner_id"><%= answer.from %></div>
+				<div class="owner_name"></div>
+				<div class="owner_pic"></div>
+			</div>
+
+			<textarea class="answer_description emoji_disabled" data-emojiable="true" ><%= answer.answer_description %></textarea>
+			
+			<div class="answer_likes">
+				<div class="like_this">like</div>
+				<div class="likes_count"><span><%= answer.likes.length %></span> likes</div>
+				<div class="dislike_this">dislike</div>
+				<div class="dislikes_count"><span><%= answer.dislikes.length %></span> dislikes</div>
+			</div>
+			
+			<div class="unlike">unlike</div>
+			<div class="undislike">un-dislike</div>
+			
+		</div><!--answer_item-->
+
+	<% }); %>
+</div><!--answers_holder-->
+
+<!-- Begin emoji-picker JavaScript -->
+    <script src="../js/emojis/config.js"></script>
+    <script src="../js/emojis/util.js"></script>
+    <script src="../js/emojis/jquery.emojiarea.js"></script>
+    <script src="../js/emojis/emoji-picker.js"></script>
+<!-- End emoji-picker JavaScript -->
+
+<script>
+      $(function() {
+			// Initializes and creates emoji set from sprite sheet
+			window.emojiPicker = new EmojiPicker({
+			  emojiable_selector: '[data-emojiable=true]',
+			  assetsPath: '../img/',
+			  popupButtonClasses: 'fa fa-smile-o'
+			});
+			// Finds all elements with `emojiable_selector` and converts them to rich emoji input fields
+			// You may want to delay this step if you have dynamically created input fields that appear later in the loading process
+			// It can be called as many times as necessary; previously converted input fields will not be converted again
+			window.emojiPicker.discover();
+			$(".emoji_disabled").attr('contenteditable', false);  
+      });
+</script>
+
+</body>
+</html>
